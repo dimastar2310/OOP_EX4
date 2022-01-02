@@ -4,6 +4,9 @@ OOP - Ex4
 Very simple GUI example for python client to communicates with the server and "play the game!"
 """
 from types import SimpleNamespace
+
+
+
 from client import Client
 import json
 from pygame import gfxdraw
@@ -12,7 +15,8 @@ from pygame import *
 
 # init pygame
 WIDTH, HEIGHT = 1080, 720
-
+GRAY = (255, 255, 255)
+BLACK=(0,0,0)
 # default port
 PORT = 6666
 # server host (default localhost 127.0.0.1)
@@ -22,7 +26,7 @@ pygame.init()
 screen = display.set_mode((WIDTH, HEIGHT), depth=32, flags=RESIZABLE)
 clock = pygame.time.Clock()
 pygame.font.init()
-
+button = pygame.Rect(10,10,100,20)
 client = Client()
 client.start_connection(HOST, PORT)
 
@@ -102,6 +106,13 @@ while client.is_running() == 'true':
         if event.type == pygame.QUIT:
             pygame.quit()
             exit(0)
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            # 1 is the left mouse button, 2 is middle, 3 is right.
+            if event.button == 1:
+                # `event.pos` is the mouse position.
+                if button.collidepoint(event.pos):
+                    # Increment the number.
+                    client.stop()
 
     # refresh surface
     screen.fill(Color(0, 0, 0))
@@ -137,6 +148,10 @@ while client.is_running() == 'true':
         # draw the line
         pygame.draw.line(screen, Color(61, 72, 126),
                          (src_x, src_y), (dest_x, dest_y))
+    pygame.draw.rect(screen, GRAY, button)
+    text_surf = FONT.render("STOP", True, BLACK)
+    text_rect = text_surf.get_rect(center=(55,16))
+    screen.blit(text_surf, text_rect)
 
     # draw agents
     for agent in agents:
