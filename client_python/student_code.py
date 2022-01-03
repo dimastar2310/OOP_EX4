@@ -5,7 +5,8 @@ Very simple GUI example for python client to communicates with the server and "p
 """
 from types import SimpleNamespace
 
-
+import yellow as yellow
+from pygame.font import Font
 
 from client import Client
 import json
@@ -15,21 +16,22 @@ from pygame import *
 
 # init pygame
 WIDTH, HEIGHT = 1080, 720
-GRAY = (255, 255, 255)
+WHITE = (255, 255, 255)
+RED = (255,0,0)
 BLACK=(0,0,0)
 # default port
 PORT = 6666
 # server host (default localhost 127.0.0.1)
 HOST = '127.0.0.1'
 pygame.init()
-
+conter=0
 screen = display.set_mode((WIDTH, HEIGHT), depth=32, flags=RESIZABLE)
 clock = pygame.time.Clock()
 pygame.font.init()
 button = pygame.Rect(10,10,100,20)
 client = Client()
 client.start_connection(HOST, PORT)
-
+points=0
 pokemons = client.get_pokemons()
 pokemons_obj = json.loads(pokemons, object_hook=lambda d: SimpleNamespace(**d))
 
@@ -74,8 +76,8 @@ def my_scale(data, x=False, y=False):
 radius = 15
 
 client.add_agent("{\"id\":0}")
-# client.add_agent("{\"id\":1}")
-# client.add_agent("{\"id\":2}")
+client.add_agent("{\"id\":1}")
+client.add_agent("{\"id\":2}")
 # client.add_agent("{\"id\":3}")
 
 # this commnad starts the server - the game is running now
@@ -148,19 +150,41 @@ while client.is_running() == 'true':
         # draw the line
         pygame.draw.line(screen, Color(61, 72, 126),
                          (src_x, src_y), (dest_x, dest_y))
-    pygame.draw.rect(screen, GRAY, button)
+    pygame.draw.rect(screen, WHITE, button)
     text_surf = FONT.render("STOP", True, BLACK)
     text_rect = text_surf.get_rect(center=(55,16))
     screen.blit(text_surf, text_rect)
+    info = str(client.get_info())
+    g = info.split(":")
+    conter=g[4].split(',')[0]
+    font = pygame.font.SysFont(None, 24)
+    text_moves = font.render('moves:'+conter, True, WHITE)
+    screen.blit(text_moves, (20, 40))
+    text_time_to_end = font.render('time to end:' + str(((float(client.time_to_end())/1000)%60)), True, WHITE)
+    screen.blit(text_time_to_end, (20, 60))
 
+    info=g[5].split(',')[0]
+    text_points = font.render('points:' + info, True, WHITE)
+    screen.blit(text_points, (20, 80))
+    for p in pokemons:
+          point = font.render(str(p.value), True, WHITE)
+          screen.blit(point, ( int(p.pos.x),int(p.pos.y)+20 ))
+    i=1
+    for agent in agents:
+
+        text_agent = font.render('agent :'+ str(agent.id)+' pos : x:'+str(agent.pos.x)+' y:'+str(agent.pos.y), True, WHITE)
+        screen.blit(text_agent, (20, 80+20*i))
+        i+=1
     # draw agents
     for agent in agents:
         pygame.draw.circle(screen, Color(122, 61, 23),
                            (int(agent.pos.x), int(agent.pos.y)), 10)
     # draw pokemons (note: should differ (GUI wise) between the up and the down pokemons (currently they are marked in the same way).
     for p in pokemons:
-        pygame.draw.circle(screen, Color(0, 255, 255), (int(p.pos.x), int(p.pos.y)), 10)
-
+        if p.type == -1:
+            pygame.draw.circle(screen, Color(0, 255, 255), (int(p.pos.x), int(p.pos.y)), 10)
+        else:
+            pygame.draw.circle(screen, RED, (int(p.pos.x), int(p.pos.y)), 10)
     # update screen changes
     display.update()
 
