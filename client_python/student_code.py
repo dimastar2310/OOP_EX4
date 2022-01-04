@@ -52,6 +52,13 @@ for n in graph.Nodes:
     x, y, _ = n.pos.split(',')
     n.pos = SimpleNamespace(x=float(x), y=float(y))
     g.add_node(n.id,(x,y,0))
+
+for e in graph.Edges:
+        # find the edge nodes
+        src = next(n for n in graph.Nodes if n.id == e.src)
+        dest = next(n for n in graph.Nodes if n.id == e.dest)
+        g.add_edge(src.id,dest.id,e.w)
+
  # get data proportions
 min_x = min(list(graph.Nodes), key=lambda n: n.pos.x).pos.x
 min_y = min(list(graph.Nodes), key=lambda n: n.pos.y).pos.y
@@ -143,7 +150,7 @@ while client.is_running() == 'true':
         # find the edge nodes
         src = next(n for n in graph.Nodes if n.id == e.src)
         dest = next(n for n in graph.Nodes if n.id == e.dest)
-        g.add_edge(id1= src.id,id2=dest.id,weight=e.w)
+
 
         # scaled positions
         src_x = my_scale(src.pos.x, x=True)
