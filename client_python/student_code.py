@@ -15,6 +15,9 @@ import pygame
 from pygame import *
 
 # init pygame
+from client_python.DiGraph import DiGraph
+from client_python.GraphAlgo import GraphAlgo
+
 WIDTH, HEIGHT = 1080, 720
 WHITE = (255, 255, 255)
 RED = (255,0,0)
@@ -38,7 +41,7 @@ pokemons_obj = json.loads(pokemons, object_hook=lambda d: SimpleNamespace(**d))
 print(pokemons)
 
 graph_json = client.get_graph()
-
+g = DiGraph()
 FONT = pygame.font.SysFont('Arial', 20, bold=True)
 # load the json string into SimpleNamespace Object
 
@@ -48,7 +51,7 @@ graph = json.loads(
 for n in graph.Nodes:
     x, y, _ = n.pos.split(',')
     n.pos = SimpleNamespace(x=float(x), y=float(y))
-
+    g.add_node(n.id,(x,y,0))
  # get data proportions
 min_x = min(list(graph.Nodes), key=lambda n: n.pos.x).pos.x
 min_y = min(list(graph.Nodes), key=lambda n: n.pos.y).pos.y
@@ -78,7 +81,7 @@ radius = 15
 client.add_agent("{\"id\":0}")
 client.add_agent("{\"id\":1}")
 client.add_agent("{\"id\":2}")
-# client.add_agent("{\"id\":3}")
+client.add_agent("{\"id\":3}")
 
 # this commnad starts the server - the game is running now
 client.start()
@@ -140,6 +143,7 @@ while client.is_running() == 'true':
         # find the edge nodes
         src = next(n for n in graph.Nodes if n.id == e.src)
         dest = next(n for n in graph.Nodes if n.id == e.dest)
+        g.add_edge(id1= src.id,id2=dest.id,weight=e.w)
 
         # scaled positions
         src_x = my_scale(src.pos.x, x=True)
@@ -150,6 +154,7 @@ while client.is_running() == 'true':
         # draw the line
         pygame.draw.line(screen, Color(61, 72, 126),
                          (src_x, src_y), (dest_x, dest_y))
+    my_graph=GraphAlgo(g)
     pygame.draw.rect(screen, WHITE, button)
     text_surf = FONT.render("STOP", True, BLACK)
     text_rect = text_surf.get_rect(center=(55,16))
