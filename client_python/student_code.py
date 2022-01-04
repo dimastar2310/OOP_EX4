@@ -216,7 +216,8 @@ while client.is_running() == 'true':
     for agent in agents:
         if agent.dest == -1:
             for p in pokemons:
-             next_node = my_graph.graph.get_edge(p.pos.x,p.pos.y)
+             nodePbefore = my_graph.graph.get_edge(p.pos.x,p.pos.y)
+             next_node = (agent.src,nodePbefore[0])
              print("the x cordinate of p are",p.pos.x)
              client.choose_next_edge(
                 '{"agent_id":'+str(agent.id)+', "next_node_id":'+str(next_node)+'}')
