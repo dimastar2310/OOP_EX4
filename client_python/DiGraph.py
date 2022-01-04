@@ -1,4 +1,4 @@
-import self
+
 
 from GraphInterface import GraphInterface
 from My_NodeData import My_NodeData
@@ -21,8 +21,8 @@ class DiGraph(GraphInterface):
      nodes=self.get_all_v()
      for node in nodes:
          for edege in self.all_in_edges_of_node(node):
-             if(self.on_Edege(edege,edege.key(),x,y)):
-                 return (edege,edege.key())
+             if(self.on_Edege(node,edege,x,y)):
+                 return (node,edege)
 
      return (0,0)
 
@@ -31,18 +31,11 @@ class DiGraph(GraphInterface):
         nodes=self.nodes
         src=nodes.get(id1)
         dest=nodes.get(id2)
-        ysrc=src.getlocation()[1]
-        xsrc=src.getlocation()[0]
-        ydest=dest.getlocation()[1]
-        xdest=dest.getlocation()[0]
-
-        if (xsrc > pokemonX and xdest > pokemonX) or (xdest < pokemonX and xsrc < pokemonX):
-            return False
-
-        if (ysrc > pokemonY and ydest > pokemonY) or (ysrc<pokemonY and ydest<pokemonY):
-            return False
-
-        m=(ysrc-ydest)/(xsrc-xdest)
+        ysrc=float(src.getlocation()[1])
+        xsrc=float(src.getlocation()[0])
+        ydest=float(dest.getlocation()[1])
+        xdest=float(dest.getlocation()[0])
+        m= float((ysrc-ydest)/(xsrc-xdest))
         b = m * xsrc - ysrc
         if pokemonY == (m*pokemonX+b):
             return True
