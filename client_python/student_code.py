@@ -211,6 +211,6 @@ while client.is_running() == 'true':
                 '{"agent_id":'+str(agent.id)+', "next_node_id":'+str(next_node)+'}')
             ttl = client.time_to_end()
             print(ttl, client.get_info())
+        client.move()
 
-    client.move()
 # game over:

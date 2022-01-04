@@ -35,6 +35,13 @@ class DiGraph(GraphInterface):
         xsrc=src.getlocation()[0]
         ydest=dest.getlocation()[1]
         xdest=dest.getlocation()[0]
+
+        if (xsrc > pokemonX and xdest > pokemonX) or (xdest < pokemonX and xsrc < pokemonX):
+            return False
+
+        if (ysrc > pokemonY and ydest > pokemonY) or (ysrc<pokemonY and ydest<pokemonY):
+            return False
+
         m=(ysrc-ydest)/(xsrc-xdest)
         b = m * xsrc - ysrc
         if pokemonY == (m*pokemonX+b):
