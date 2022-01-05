@@ -5,9 +5,9 @@ Very simple GUI example for python client to communicates with the server and "p
 """
 from types import SimpleNamespace
 
-import yellow as yellow
-from pygame.font import Font
 
+from pygame.font import Font
+from queue import PriorityQueue
 from client import Client
 import json
 from pygame import gfxdraw
@@ -65,6 +65,25 @@ min_y = min(list(graph.Nodes), key=lambda n: n.pos.y).pos.y
 max_x = max(list(graph.Nodes), key=lambda n: n.pos.x).pos.x
 max_y = max(list(graph.Nodes), key=lambda n: n.pos.y).pos.y
 
+class Pokemon:
+
+    def __init__(self,value:float,shortDist:float):
+        self.sight = 0
+        self.value = value
+        self.shortDist = shortDist
+    #closest shortDist
+    def __lt__(self, o): #self.value == o.value and self.shortDist == o.dis
+        if isinstance(o, Pokemon):
+            return self.shortDist == o.shortDist
+    def setSight(self,sight:int)->None:
+        self.sight= sight
+class Agent:
+    def __init__(self):
+        self.pokemons = PriorityQueue()
+
+    def addPokemons(self, p=Pokemon()):
+        self.pokemons.put(p)
+
 
 def scale(data, min_screen, max_screen, min_data, max_data):
     """
@@ -111,6 +130,7 @@ while client.is_running() == 'true':
         x, y, _ = p.pos.split(',')
         p.pos = SimpleNamespace(x=my_scale(
             float(x), x=True), y=my_scale(float(y), y=True))
+        
     agents = json.loads(client.get_agents(),
                         object_hook=lambda d: SimpleNamespace(**d)).Agents
     agents = [agent.Agent for agent in agents]
