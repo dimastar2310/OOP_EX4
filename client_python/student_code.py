@@ -5,7 +5,7 @@ Very simple GUI example for python client to communicates with the server and "p
 """
 from types import SimpleNamespace
 
-
+import yellow as yellow
 from pygame.font import Font
 
 from client import Client
@@ -17,8 +17,6 @@ from pygame import *
 # init pygame
 from client_python.DiGraph import DiGraph
 from client_python.GraphAlgo import GraphAlgo
-
-from queue import PriorityQueue
 
 WIDTH, HEIGHT = 1080, 720
 WHITE = (255, 255, 255)
@@ -55,15 +53,12 @@ for n in graph.Nodes:
     n.pos = SimpleNamespace(x=float(x), y=float(y))
     g.add_node(n.id,(x,y,0))
 
-
-
 for e in graph.Edges:
         # find the edge nodes
         src = next(n for n in graph.Nodes if n.id == e.src)
         dest = next(n for n in graph.Nodes if n.id == e.dest)
         g.add_edge(src.id,dest.id,e.w)
 
-my_graph = GraphAlgo(g)
  # get data proportions
 min_x = min(list(graph.Nodes), key=lambda n: n.pos.x).pos.x
 min_y = min(list(graph.Nodes), key=lambda n: n.pos.y).pos.y
@@ -87,13 +82,18 @@ def my_scale(data, x=False, y=False):
     if y:
         return scale(data, 50, screen.get_height()-50, min_y, max_y)
 
+for n in g.get_all_v().values():
+    x=my_scale(float(n.getlocation()[0]), x=True)
+    y=my_scale(float(n.getlocation()[1]), y=True)
+    n.setlocation((x,y,0))
+
 
 radius = 15
 
 client.add_agent("{\"id\":0}")
-#client.add_agent("{\"id\":1}")
-#client.add_agent("{\"id\":2}")
-#client.add_agent("{\"id\":3}")
+client.add_agent("{\"id\":1}")
+client.add_agent("{\"id\":2}")
+client.add_agent("{\"id\":3}")
 
 # this commnad starts the server - the game is running now
 client.start()
@@ -166,7 +166,7 @@ while client.is_running() == 'true':
         # draw the line
         pygame.draw.line(screen, Color(61, 72, 126),
                          (src_x, src_y), (dest_x, dest_y))
-
+    my_graph=GraphAlgo(g)
     pygame.draw.rect(screen, WHITE, button)
     text_surf = FONT.render("STOP", True, BLACK)
     text_rect = text_surf.get_rect(center=(55,16))
@@ -209,20 +209,18 @@ while client.is_running() == 'true':
     clock.tick(60)
 
     # choose next edge
-    #ga
-    #i want to prior on my agents
-    qagents = PriorityQueue()
-
     for agent in agents:
-        if agent.dest == -1:
-            for p in pokemons:
-             nodePbefore = my_graph.graph.get_edge(p.pos.x,p.pos.y)
-             next_node = (agent.src,nodePbefore[0])
-             print("the x cordinate of p are",p.pos.x)
-             client.choose_next_edge(
-                '{"agent_id":'+str(agent.id)+', "next_node_id":'+str(next_node)+'}')
+        for p in pokemons:
+            next_node=0
+            if agent.dest == -1:
+                next_node =my_graph.graph.get_edge(p.pos.x,p.pos.y)
+                node_agent =my_graph.graph.get_agent(float(agent.pos.x),float(agent.pos.y))
+                shortc=my_graph.shortest_path(node_agent,next_node[0])
+
+            client.choose_next_edge(
+                 '{"agent_id":'+str(agent.id)+', "next_node_id":'+str(next_node)[0]+'}')
             ttl = client.time_to_end()
             print(ttl, client.get_info())
+            client.move()
 
-    client.move()
 # game over:
