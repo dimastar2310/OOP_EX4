@@ -35,12 +35,25 @@ class DiGraph(GraphInterface):
         xsrc=float(src.getlocation()[0])
         ydest=float(dest.getlocation()[1])
         xdest=float(dest.getlocation()[0])
+        if (xdest > pokemonX and xsrc > pokemonX) or (xdest <pokemonX and xsrc < pokemonX):
+            return False
+        if (ydest > pokemonY and ysrc > pokemonY) or (ydest < pokemonY and ysrc < pokemonY):
+            return False
         m= float((ysrc-ydest)/(xsrc-xdest))
         b = m * xsrc - ysrc
-        if pokemonY == (m*pokemonX+b):
+        if pokemonY-(m*pokemonX+b)<0.0001:
             return True
         else:
             return False
+    def get_agent(self,x:float,y:float)-> int:
+        nodes = self.get_all_v().values()
+        for node in nodes:
+            xn=node.getlocation()[0]
+            yn=node.getlocation()[1]
+            if xn==x and y==yn:
+                return node.getkey()
+        return 0
+
 
     def get_v(self, key) -> My_NodeData:
         return self.nodes[key]

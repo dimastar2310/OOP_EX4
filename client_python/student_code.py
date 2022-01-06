@@ -261,11 +261,17 @@ while client.is_running() == 'true':
             next_node=0
             if agent.dest == -1:
                 next_node =my_graph.graph.get_edge(p.pos.x,p.pos.y)
+                if p.type < 0:
+                    if next_node[0]<next_node[1]:
+                        t=next_node[0]
+                        x=next_node[1]
+                        next_node=(x,t)
+
                 node_agent =my_graph.graph.get_agent(float(agent.pos.x),float(agent.pos.y))
-                shortc=my_graph.shortest_path(node_agent,next_node[0])
+                path=my_graph.shortest_path(node_agent,next_node[0])[1]
 
             client.choose_next_edge(
-                 '{"agent_id":'+str(agent.id)+', "next_node_id":'+str(next_node)[0]+'}')
+                 '{"agent_id":'+str(agent.id)+', "next_node_id":'+str(path[1])+'}')
             ttl = client.time_to_end()
             print(ttl, client.get_info())
             client.move()
