@@ -259,8 +259,6 @@ while client.is_running() == 'true':
     for agent in agents:
         for p in pokemons:
             next_node=0
-            if my_graph.graph.agent_on_node(agent):
-                agent.dest=-1
             if agent.dest == -1:
                 next_node =my_graph.graph.get_edge(p.pos.x,p.pos.y)
                 if p.type < 0:
