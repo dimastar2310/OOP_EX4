@@ -4,7 +4,7 @@ OOP - Ex4
 Very simple GUI example for python client to communicates with the server and "play the game!"
 """
 from types import SimpleNamespace
-
+from ursina import time
 
 from pygame.font import Font
 from queue import PriorityQueue
@@ -127,7 +127,7 @@ my_pokimons=[]
 my_agents=[]
 radius = 15
 
-client.add_agent("{\"id\":0}")
+client.add_agent("{\"id\":7}")
 client.add_agent("{\"id\":1}")
 client.add_agent("{\"id\":2}")
 client.add_agent("{\"id\":3}")
@@ -258,22 +258,21 @@ while client.is_running() == 'true':
     # choose next edge
     for agent in agents:
         for p in pokemons:
-            next_node=0
+            next_node = my_graph.graph.get_edge(p.pos.x, p.pos.y)
             if agent.dest == -1:
-                next_node =my_graph.graph.get_edge(p.pos.x,p.pos.y)
-                if p.type < 0:
-                    if next_node[0]<next_node[1]:
-                        t=next_node[0]
-                        x=next_node[1]
-                        next_node=(x,t)
-
                 node_agent =my_graph.graph.get_agent(float(agent.pos.x),float(agent.pos.y))
-                path=my_graph.shortest_path(node_agent,next_node[0])[1]
+                if agent.src<agent.dest or next_node[1]==agent.src:
+                    path = my_graph.shortest_path(node_agent, next_node[0])[1]
+                else:
+                    path = my_graph.shortest_path(node_agent, next_node[1])[1]
+
 
             client.choose_next_edge(
                  '{"agent_id":'+str(agent.id)+', "next_node_id":'+str(path[1])+'}')
             ttl = client.time_to_end()
             print(ttl, client.get_info())
+
+            pygame.time.delay(150)
             client.move()
 
 # game over:

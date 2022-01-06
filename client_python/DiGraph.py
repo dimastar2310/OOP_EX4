@@ -41,8 +41,9 @@ class DiGraph(GraphInterface):
         if (ydest > pokemonY and ysrc > pokemonY) or (ydest < pokemonY and ysrc < pokemonY):
             return False
         m= float((ysrc-ydest)/(xsrc-xdest))
-        b = m * xsrc - ysrc
-        if pokemonY-(m*pokemonX+b)<0.0001:
+        b = -(m * xsrc )+ysrc
+        ans=pokemonY - (m * pokemonX + b)
+        if ans<0.0001:
             return True
         else:
             return False
