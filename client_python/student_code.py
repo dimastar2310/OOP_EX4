@@ -131,7 +131,7 @@ client.add_agent("{\"id\":0}")
 client.add_agent("{\"id\":1}")
 client.add_agent("{\"id\":2}")
 client.add_agent("{\"id\":3}")
-
+my_graph = GraphAlgo(g)
 # this commnad starts the server - the game is running now
 client.start()
 
@@ -213,7 +213,7 @@ while client.is_running() == 'true':
         # draw the line
         pygame.draw.line(screen, Color(61, 72, 126),
                          (src_x, src_y), (dest_x, dest_y))
-    my_graph=GraphAlgo(g)
+
     pygame.draw.rect(screen, WHITE, button)
     text_surf = FONT.render("STOP", True, BLACK)
     text_rect = text_surf.get_rect(center=(55,16))
@@ -259,6 +259,8 @@ while client.is_running() == 'true':
     for agent in agents:
         for p in pokemons:
             next_node=0
+            if my_graph.graph.agent_on_node(agent):
+                agent.dest=-1
             if agent.dest == -1:
                 next_node =my_graph.graph.get_edge(p.pos.x,p.pos.y)
                 if p.type < 0:
