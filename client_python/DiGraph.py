@@ -26,17 +26,7 @@ class DiGraph(GraphInterface):
 
      return (0,0)
 
-    def agent_on_node(self,agent) -> bool:
-        nodes = self.get_all_v().values()
-        for node in nodes:
-            xnode=float(node.getlocation()[0])
-            ynode=float(node.getlocation()[1])
-            x=float(agent.pos.x)
-            y=float(agent.pos.y)
-            if x==xnode and y==ynode:
-                agent.src=node.getkey()
-                return True
-        return False
+
 
     def on_Edege(self, id1,id2,pokemonX,pokemonY) -> bool:
         nodes=self.nodes
