@@ -1,4 +1,4 @@
-# Ex4 OOP Pokemons Gotta catch them all!
+# Ex4 OOP Pokemons Gotta catch them all,fast!
 welcome to the 4rd assignment of our OOP course .
 at this task we going to summarize all our projectst 
 to 1. In the lest projects ,project 0 we talked about 
