@@ -1,17 +1,17 @@
 # Ex4 OOP Pokemons Gotta catch them all!
 welcome to the 4rd assignment of our OOP course .
 at this task we going to summarize all our projectst 
-to 1 in the lest projects ,project 0 we talked about 
+to 1. In the lest projects ,project 0 we talked about 
 online implementation of elevators wich goal was to minimizing 
 waiting time of passanger wich is famous OOP project we had server
 that made us calls for seconds we didnt know furder data,in second 
-project we did know the data we needed to improve first implementaion,
+project we did know the data we needed to improve first implementaion and make it offline,
 3rd  project was implementing directed weighed graph with the algorithm
 of dijakstra,Center of graph,IsConnected,Tsp in java after that 
 we needed to implement it to python and now we have 4rd assignment 
-witch is catching pokemons ,the task is you have agents and pokemons 
-the pokemons has value and there are constrains its online witch means
-we have client that hes Server he sends us pokemons in duration times,
+witch is catching pokemons ,the task is: we have agents and pokemons 
+the pokemons has value and there are constrains its online code witch means
+we have client that hes Server ,he sends us pokemons in duration times,
 and we dont have the data before we need to get best scores and do it fast,
 becouse there is time limit too if eatting alot of pokemons the server generating
 us more pokemons. 
