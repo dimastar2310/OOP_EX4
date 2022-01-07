@@ -65,6 +65,7 @@ we converting the pokemond and the agent and the graph are json data,intro to ou
   |------------------|-------------|
   | def scale(data, min_screen, max_screen, min_data, max_data)  | rearenging scales for gui|
   | my_scale(data, x=False, y=False)  | the json files are too close in cordinates so we make am bigger|
+  ### disctiption of student_code <br />
   loading data(current game) agents,pokemons ,appending screen for gui
   now the algorithm in down rows:we running on agents for each agent if he 
   is on some vertesis agent.dest = -1 ,we starting to work with him
