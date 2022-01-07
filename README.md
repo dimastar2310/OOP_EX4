@@ -52,24 +52,30 @@ we converting the pokemond and the agent and the graph are json data,intro to ou
   |log_in(self, id_str)|enter your id as str to login and upload your score to the web server|
   |stop_connection(self))|use it to close the connection 'gracefuly'.|
   
-### client <br />
-  this class is server class and it has folowing functions
+### student_code <br />
+  this class is student class(main) first we making composition with
+  client(server) setting pygame for gui,making connection with server
+  seeting pygame variables ,getting the from the server and putting in our graph 
+  that we made in 3rd task ,splitting the strings in json becouse its not fully json,
+  adding the the nodes and edges wich are in json file they all represent graph putting them all
+  in our graph,getting the agents,pokemons,data  in each dt in the while loop till the time ends.
+  
+  
   | Name of function | Description |
   |------------------|-------------|
-  | start_connection(self, ip, port)  | connection with server|
-  | def __send_message(self, msg)  | try and catch error|
-  | def get_agents(self)  | returns: json str of agents |
-  | def add_agent(self, json_of_node)  | server function to add agents in json format|
-  |def get_graph(self)|getting to user graph in json format|
-  |def get_info(self)| returns info of current sicle in  game num of agents ,pokemons,moves |
-  |def get_pokemons(self) | Returns the current dt seed of pokemons in json format|
-  |def is_running(self) | return True if the game is still running False o.w.|
-  |def time_to_end(self) |  return the time of the game|
-  |def stop(self)|stopes the game and upload results |
-  |def move(self)|activate all valid choose_next_edge calls|
-  |choose_next_edge(self, next_agent_node_json)|choosing the next destination for a specific agent.|
-  |log_in(self, id_str)|enter your id as str to login and upload your score to the web server|
-  |stop_connection(self))|use it to close the connection 'gracefuly'.|
+  | def scale(data, min_screen, max_screen, min_data, max_data)  | rearenging scales for gui|
+  | my_scale(data, x=False, y=False)  | the json files are too close in cordinates so we make am bigger|
+  loading data(current game) agents,pokemons ,appending screen for gui
+  now the algorithm in down rows:we running on agents for each agent if he 
+  is on some vertesis agent.dest = -1 ,we starting to work with him
+  becouse our functions works from vertesis to vertesis if its true 
+  for the first pokemon we making shortest path function 
+  wich has 2 return paramets distance and the path ,we got agents position
+  but we dont know on wich edge he is so we made additional function in 
+  Digraph class that returns us the right node ,we have additional function
+  in Digraph that tells us on wich edge the pokemond lyes we returning 
+  (src,dest) of the edge ,need to add here more Shai
+  
 ### My_Nodedata <br />
   this class implements NodeData interface represent node at graph
   that have id=name_of_node and location=(0,0,0) 
