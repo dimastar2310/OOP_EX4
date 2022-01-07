@@ -77,6 +77,8 @@ we converting the pokemond and the agent and the graph are json data,intro to ou
   in Digraph that tells us on wich edge the pokemond lyes we returning 
   (src,dest) of the edge ,need to add here more Shai
   
+  - the UML Diagram for algorithm is   <br />
+![Alt text](https://github.com/dimastar2310/OOP_EX4/blob/main/Pokemons_catch.png) 
 ### My_Nodedata <br />
   this class implements NodeData interface represent node at graph
   that have id=name_of_node and location=(0,0,0) 
