@@ -67,21 +67,17 @@ max_y = max(list(graph.Nodes), key=lambda n: n.pos.y).pos.y
 
 class Pokemon:
 
-    def __init__(self,value:float,shortDist:float,location:tuple, t:int):
-        self.t = t #0 its goint up -1 going down?
+    def __init__(self,value:float,location:tuple, t:int):
+        self.type = t #0 its goint up -1 going down?
         self.flag = 0
         self.value = value
-        self.shortDist = shortDist
-        self.location = location
+        self.pos = location
 
 
 
-    #closest shortDist
-    def __lt__(self, o): #self.value == o.value and self.shortDist == o.dis
-        if isinstance(o, Pokemon):
-            return self.shortDist == o.shortDist
     def setFlag(self,flag:int)->None:
         self.flag= flag
+
     def setShort(self,shortDist:float)->None:
         self.shortDist = shortDist
     def setSight(self,t:int)->None:
@@ -90,7 +86,7 @@ class Pokemon:
 
 class Agent:
     def __init__(self,location:tuple,id:int ,value:float , src:int , dest:int ,speed:float):
-        self.location=location
+        self.pos=location
         self.id=id
         self.value=value
         self.src=src
@@ -150,9 +146,9 @@ while client.is_running() == 'true':
             float(x), x=True), y=my_scale(float(y), y=True))
         x=my_scale(float(x),x=True)
         y=my_scale(float(y),y=True)
-        my=Pokemon(value=float(p.value),t=int(p.type),location=(x,y),shortDist=0.0)
+        my=Pokemon(value=float(p.value),t=int(p.type),location=(x,y))
         my_pokimons.append(my)
-        
+
     agents = json.loads(client.get_agents(),
                         object_hook=lambda d: SimpleNamespace(**d)).Agents
     agents = [agent.Agent for agent in agents]
@@ -258,21 +254,22 @@ while client.is_running() == 'true':
     # choose next edge
     for agent in agents:
         for p in pokemons:
-            next_node = my_graph.graph.get_edge(p.pos.x, p.pos.y)
-            if agent.dest == -1:
-                node_agent =my_graph.graph.get_agent(float(agent.pos.x),float(agent.pos.y))
-                if agent.src<agent.dest or next_node[1]==agent.src:
-                    path = my_graph.shortest_path(node_agent, next_node[0])[1]
-                else:
-                    path = my_graph.shortest_path(node_agent, next_node[1])[1]
+                next_node = my_graph.graph.get_edge(p.pos.x, p.pos.y)
+                if agent.dest == -1:
+                    node_agent =my_graph.graph.get_agent(float(agent.pos.x),float(agent.pos.y))
+                    if agent.src<agent.dest or next_node[1]==agent.src:
+                        path = my_graph.shortest_path(node_agent, next_node[0])[1]
+                    else:
+                        path = my_graph.shortest_path(node_agent, next_node[1])[1]
 
 
-            client.choose_next_edge(
-                 '{"agent_id":'+str(agent.id)+', "next_node_id":'+str(path[1])+'}')
-            ttl = client.time_to_end()
-            print(ttl, client.get_info())
 
-            pygame.time.delay(150)
-            client.move()
+                client.choose_next_edge(
+                     '{"agent_id":'+str(agent.id)+', "next_node_id":'+str(path[1])+'}')
+                ttl = client.time_to_end()
+                print(ttl, client.get_info())
+
+                pygame.time.delay(150)
+                client.move()
 
 # game over:
