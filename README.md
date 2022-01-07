@@ -1,5 +1,5 @@
 # Ex4 OOP Pokemons Gotta catch them all!
-welcome to the 4rd assignment in OOP course .
+welcome to the 4rd assignment of OOP course .
 at this task we going to summarize all our projectst 
 to 1 in the lest projects ,project 0 we talked about 
 online implementation of elevators wich goal was to minimizing 
