@@ -269,7 +269,7 @@ while client.is_running() == 'true':
                 ttl = client.time_to_end()
                 print(ttl, client.get_info())
 
-                pygame.time.delay(150)
+                pygame.time.delay(110)
                 client.move()
 
 # game over:
