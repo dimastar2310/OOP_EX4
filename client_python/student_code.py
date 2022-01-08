@@ -65,38 +65,6 @@ min_y = min(list(graph.Nodes), key=lambda n: n.pos.y).pos.y
 max_x = max(list(graph.Nodes), key=lambda n: n.pos.x).pos.x
 max_y = max(list(graph.Nodes), key=lambda n: n.pos.y).pos.y
 
-class Pokemon:
-
-    def __init__(self,value:float,location:tuple, t:int):
-        self.type = t #0 its goint up -1 going down?
-        self.flag = 0
-        self.value = value
-        self.pos = location
-
-
-
-    def setFlag(self,flag:int)->None:
-        self.flag= flag
-
-    def setShort(self,shortDist:float)->None:
-        self.shortDist = shortDist
-    def setSight(self,t:int)->None:
-        self.t = t
-
-
-class Agent:
-    def __init__(self,location:tuple,id:int ,value:float , src:int , dest:int ,speed:float):
-        self.pos=location
-        self.id=id
-        self.value=value
-        self.src=src
-        self.dest=dest
-        self.speed=speed
-        self.pokemons = PriorityQueue()
-
-    def addPokemons(self, p=Pokemon):
-        self.pokemons.put(p)
-
 
 def scale(data, min_screen, max_screen, min_data, max_data):
     """
@@ -119,13 +87,12 @@ for n in g.get_all_v().values():
     y=my_scale(float(n.getlocation()[1]), y=True)
     n.setlocation((x,y,0))
 
-my_pokimons=[]
-my_agents=[]
+
 radius = 15
 
-client.add_agent("{\"id\":7}")
-client.add_agent("{\"id\":1}")
-client.add_agent("{\"id\":2}")
+client.add_agent("{\"id\":26}")
+client.add_agent("{\"id\":10}")
+client.add_agent("{\"id\":6}")
 client.add_agent("{\"id\":3}")
 my_graph = GraphAlgo(g)
 # this commnad starts the server - the game is running now
@@ -146,8 +113,7 @@ while client.is_running() == 'true':
             float(x), x=True), y=my_scale(float(y), y=True))
         x=my_scale(float(x),x=True)
         y=my_scale(float(y),y=True)
-        my=Pokemon(value=float(p.value),t=int(p.type),location=(x,y))
-        my_pokimons.append(my)
+
 
     agents = json.loads(client.get_agents(),
                         object_hook=lambda d: SimpleNamespace(**d)).Agents
@@ -158,8 +124,7 @@ while client.is_running() == 'true':
             float(x), x=True), y=my_scale(float(y), y=True))
         x=my_scale(float(x),x=True)
         y=my_scale(float(y),y=True)
-        my=Agent(location=(x,y),id=int(a.id),value=float(a.value),src=int(a.src),dest=int(a.dest),speed=float(a.speed))
-        my_agents.append(my)
+
 
     # check events
     for event in pygame.event.get():
@@ -254,13 +219,15 @@ while client.is_running() == 'true':
     # choose next edge
     for agent in agents:
         for p in pokemons:
+                if agent.id != 0:
+                    p=pokemons[agent.id]
                 next_node = my_graph.graph.get_edge(p.pos.x, p.pos.y)
                 if agent.dest == -1:
                     node_agent =my_graph.graph.get_agent(float(agent.pos.x),float(agent.pos.y))
-                    if agent.src<agent.dest or next_node[1]==agent.src:
+                    if  next_node[1]==agent.src:
                         path = my_graph.shortest_path(node_agent, next_node[0])[1]
                     else:
-                        path = my_graph.shortest_path(node_agent, next_node[1])[1]
+                       path = my_graph.shortest_path(node_agent, next_node[1])[1]
 
 
 
@@ -269,7 +236,7 @@ while client.is_running() == 'true':
                 ttl = client.time_to_end()
                 print(ttl, client.get_info())
 
-                pygame.time.delay(110)
+                pygame.time.wait(110)
                 client.move()
 
 # game over:
