@@ -67,16 +67,15 @@ we converting the pokemond and the agent and the graph are json data,intro to ou
   | my_scale(data, x=False, y=False)  | the json files are too close in cordinates so we make am bigger|
   ### disctiption of student_code <br />
   loading data(current game) agents,pokemons ,appending screen for gui
-  now the algorithm in down rows:we running on agents for each agent if he 
+  now the algorithm ,first we put the agent close to pokemon location that they eat them fast at first time , then     in down rows:we running on agents for each agent 
+  we give him pokimon that he need to catch so they dont try to catch the same pokimon both of them ,if the agent 
   is on some vertesis agent.dest = -1 ,we starting to work with him
   becouse our functions works from vertesis to vertesis if its true 
-  for the first pokemon we making shortest path function 
-  wich has 2 return paramets distance and the path ,we got agents position
-  but we dont know on wich edge he is so we made additional function in 
-  Digraph class that returns us the right node ,we have additional function
-  in Digraph that tells us on wich edge the pokemond lyes we returning 
-  (src,dest) of the edge ,need to add here more Shai
-  
+  then the agent do shortpath Dijkstra's algorithm about the pokimon he need to catch. 
+  we build en   Digraph class function that return the dest and src of pokrmon so if we go at the
+  good way the agent eat the pokemon else he go the other way and eat him no never what
+  so we do the shortpath between agent src and the pokimon src , if he didnt eat him he go to the dest and the to src.
+     
   - the UML Diagram for algorithm is   <br />
 ![Alt text](https://github.com/dimastar2310/OOP_EX4/blob/main/Pokemons_catch.png) 
 ### My_Nodedata <br />
