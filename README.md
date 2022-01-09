@@ -123,7 +123,7 @@ we converting the pokemond and the agent and the graph are json data,intro to ou
    Choose the Download ZIP option from the Code pull-down menu. That ZIP file will contain the entire repository content.
   ## how to use  <br />
 - After you download the task at zip you need to extract  the zip file , then you need 
-  to open cmd going to to your file location aka cd <file location> when you be on the file location
+  to open cmd going to to your file location aka cd "file location" when you be on the file location
   you have to have java machine with (JDK 11 or above) in a command line write,
   e.g.,  <java -jar Ex4_Server_v0.0.jar 0>  (where the “0” parameter is a case between [0-15]) ,after that starting
   the program in main by pressing green button the seed should be from 30 seconds to 120 seconds depends on case you 
