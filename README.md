@@ -124,7 +124,7 @@ we converting the pokemond and the agent and the graph are json data,intro to ou
 - After you download the task at zip you need to extract  the zip file , then you need 
   to open cmd going to to your file location aka cd "file location" when you be on the file location
   you have to have java machine with (JDK 11 or above) in a command line write,
-  e.g.,  <java -jar Ex4_Server_v0.0.jar 0>  (where the “0” parameter is a case between [0-15]) ,after that starting
+  e.g.,  <java -jar Ex4_Server_v0.0.jar 0> without <>  (where the “0” parameter is a case between [0-15]) ,after that starting
   the program in main by pressing green button the seed should be from 30 seconds to 120 seconds depends on case you 
   will guy appears on the screen the brown dots are agents blue if edge_dest<edge.src the pokemons that lays on that edge 
   is blue and o.w red.
