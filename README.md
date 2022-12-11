@@ -1,34 +1,66 @@
-# Ex4 OOP Pokemons Gotta catch them all,fast!
-welcome to the 4rd assignment of our OOP course .
-at this task we going to summarize all our projectst 
-to 1. In the lest projects ,project 0 we talked about 
-online implementation of elevators wich goal was to minimizing 
-waiting time of passanger wich is famous OOP project we had server
-that made us calls for seconds we didnt know furder data,in second 
-project we did know the data we needed to improve first implementaion and make it offline,
-3rd  project was implementing directed weighed graph with the algorithm
-of dijakstra,Center of graph,IsConnected,Tsp in java after that 
-we needed to implement it to python and now we have 4rd assignment 
-witch is catching pokemons ,the task is: we have agents and pokemons 
-the pokemons has value and there are constrains its online code witch means
-we have client that hes Server ,he sends us pokemons in duration times,
-and we dont have the data before we need to get best scores and do it fast,
-becouse there is time limit too if eatting alot of pokemons the server generating
-us more pokemons. 
-The graph is continues in keys from 0 to n ,there might be biderational Edges for example
-from Verstesis 5 to 6 and from 6 to 5 so we need to take it in mind .
-pokemons wich are in right diraction from 5 to 6 we colored in blue and if the pokemon 
-is sitting on Edge from 6 to 5 in other direction(in constrains that this part of the graph 
-is bideratctional we mark them in red ,you can see it gui the task is too catch as much as possible
-and making minimum move() functions wich are annoynsing the server tath we made change in our graph
-for example if we sending the agent if we do it right we might going to need less moves
-the graph has weights so if the lesser the weight the faster he passes from edge to edge
-and there might be possibiliting that we dont update the server in time and he might not 
-eat the pokemon ,the edge speed time pass calculated with formula edge.weight*1 .
-we getting the data for each dt as json file ,the server/client has its own functions
-,the server has data wich is in format of json we need to convert the data for java language
-and work with it in our main class wich is student class we getting the connection with the server
-we converting the pokemond and the agent and the graph are json data,intro to our functions below .
+Object-Oriented Programming & Design - Ex4 (very last)
+
+Abstract
+This document presents the final (last) assignment for the OOP course (CS.Ariel 2021),
+In this assignment, you will be asked to “put into practice” the main tools covered along the course, in particular, you are expected to design a “Pokemon game” in which given a weighted graph,  a set of “Agents” should be located on it so they could “catch” as many “Pokemons” as possible. The pokemons are located on the graph’s (directed) edges, therefore, the agent needs to take (aka walk)  the proper edge to “grab” the pokemon (see below for more info). Your goal is to maximize the overall sum of weights of the “grabbed” pokemons (while not exceeding the maximum amount of server calls allowed in a second - 10 max)
+
+The Pokemon game
+Here is a list of directions regarding the “Pokemon game”:
+1.	The game is being played on a “server” that is given to you, you should design and implement the client-side (only).
+2.	The server is a simple .jar file that can be run on any java machine (JDK 11 or above) in a command line, e.g.,  <java -jar Ex4_Server_v0.0.jar 0>  (where the “0” parameter is a case between [0-15]).
+3.	After the server is running a client can connect to it (play with it) - you have two platforms to choose from: java or python (there is NO need to implement in both).
+The java example is a very simple cmd example while the python includes a basic GUI (neither have any algorithms).
+
+
+
+
+![alt text](https://github.com/dimastar2310/OOP_EX4/blob/main/Picture1.png)    ![alt text](https://github.com/dimastar2310/OOP_EX4/blob/main/Picture2.png)
+
+Figure1 (left) case 0, the game as played using the python (pygame) example, the “agent” is marked in brown, while the Pokemon is marked in a light blue.
+About the GUI:
+ Clearly, there is a long way “to go” to make the UI on the left somewhat resemble the one on the right - yet keep in mind, this assignment is mainly regarding properly designing and implementing a software package - the GUI is (always) secondary to the algorithms.
+However, it is important to create a clear scalable gui with a resizable window.
+Make sure overall points, moves counter, and time to end in seconds are presented, as well as a “stop” button to gracefully stop the game at any time point.
+Pokemons lying on downward edges should be differ from ones on upward edges.
+It is recommended (for algo debug) to draw the nodes and agents ids as well as the pokemons values.
+4.	After the game ends (each game has a fixed time - commonly 30-120 seconds) the results are printed - by the server. 
+
+![alt text](https://github.com/dimastar2310/OOP_EX4/blob/main/Picture3.png) 
+Figure2: the server cmd - the results are printed as a json string below the “Game over” 
+5.	In this assignment, we are mainly interested in maximizing the overall score - which is denoted as “grade” - the sum of all the pokemon weight as caught by all the “Agents”. E.g., in Figure 2, the grade is 79, with 1760 moves (30 seconds game).
+6.	The objective of this assignment is to maximize the grade - but without exceeding the maximal 10 calls to move per second (on average, that said, the above result is not valid as the number of “moves” is strictly above 300 = 30*10).
+7.	The client (both in java and python) has the following api (all json based):
+a.	Init the server with a case [0-15] from a command line.
+b.	Get the underlining weighted (directed) graph - you can assume it is strongly connected (getGraph).
+c.	Get the list of Pokemons (getPokemons), e.g., {"Pokemons":[{"Pokemon":{"value":5.0,"type":-1,"pos":"35.197656770719604,32.10191878639921,0.0"}}]} where value is the weight (grade), type is positive if the edge_dest > edge_src (else negative), and pos is the 2D position of it (here you need to find the edge - by the position & type). 
+d.	Get a list of all the Agents (in case an agent is on a node its “dest” is -1).
+e.	Locate each Agent on a node (addAgent) - before the game starts.
+f.	Start a game - each game has a fixed time - mostly 30-120 seconds.
+g.	Get the remaining time (in mili seconds) for the game to be played
+h.	Direct each agent to the next destination (chooseNextEdge) - this can be done only when the agent is on a node (not on an edge) - this is the main api for the algorithm.
+i.	Move the agents: this is the main method that “plays the game” - in order 
+for an Agent to grab a pokemon, the agent needs to be on the same (directed edge) & the server should be called (move) when the Agent is “close-enough” to the pokemon - Note: the exact distance is not given.
+j.	Get the game info (getInfo): returns the grade, and the number of moves of the current game. This data is printed at the end of each game.
+
+
+![alt text](https://github.com/dimastar2310/OOP_EX4/blob/main/Picture4.png) 
+
+
+https://github.com/dimastar2310/OOP_EX4/blob/main/Picture4.png
+
+
+Figure3: the main (java) api - the python is the same.
+
+
+Working Tasks: 
+
+Sage 1 - get it running + github the project.
+Stage 2 - design the general algorithm (write it down properly in your github docs).
+Stage 3 - implement the simplest version of a working code (this should include a debuggable GUI)
+Stage 4 - Improve your code and start uploading your results to the Google form.
+Stage 5 - Make sure you have all the needed documents including readme, algorithm definition, class diagram, “how to run”, results, tests (unitest / junit), and some images (and a short clip) as a wiki (github) project. Make sure there is a working release available for download, and a short clip 
+Stage 6 - report your results here, make sure you report all the 16 cases [0-15].
+Stage 7 - upload your github link here.
 
 
 ## classes 
